@@ -20,4 +20,4 @@ Visit [this site](https://museum.netlfy.app)
 this site is completely built with html, css and js. most of the styling is tailwind css
 
 ## ai use decleration
-gemini was used to make the site look better.
+gemini was used to convert the some of the original black and white page into a page with more modern ui and aestethics.
