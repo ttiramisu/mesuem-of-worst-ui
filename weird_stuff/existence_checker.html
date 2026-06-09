@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Existence Checker | Worst UI Museum</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              dark: '#0f172a',
+              light: '#f8fafc',
+              accent: '#facc15',
+              danger: '#ef4444'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0f172a;
+      background-image: radial-gradient(#1e293b 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    .captcha-checkbox {
+      appearance: none;
+      background-color: #fff;
+      margin: 0;
+      font: inherit;
+      color: currentColor;
+      width: 1.75em;
+      height: 1.75em;
+      border: 2px solid #cbd5e1;
+      border-radius: 0.25em;
+      display: grid;
+      place-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .captcha-checkbox::before {
+      content: "";
+      width: 1em;
+      height: 1em;
+      transform: scale(0);
+      transition: 120ms transform ease-in-out;
+      box-shadow: inset 1em 1em #22c55e;
+      background-color: #22c55e;
+      transform-origin: center;
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    }
+
+    .captcha-checkbox:checked::before {
+      transform: scale(1);
+    }
+
+    .captcha-checkbox:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+
+<body class="text-slate-300 font-sans min-h-screen flex flex-col antialiased">
+
+  <main class="flex-grow container mx-auto px-6 py-12 max-w-4xl">
+
+    <div class="mb-10 flex items-center justify-between">
+      <a href="../index.html"
+        class="inline-flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-brand-accent transition-colors group">
+        <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor"
+          viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Back to Museum
+      </a>
+    </div>
+
+    <header class="mb-12">
+      <h1 class="text-4xl font-extrabold text-white tracking-tight mb-4">
+        Existence Checker
+      </h1>
+      <p class="text-lg text-slate-400">
+        Are you truly human? Do you actually exist? We must run deep biological analyses on your physical form and
+        cursor pathing to make sure. Please do not close your window.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <section class="space-y-6">
+        <h2 class="text-xl font-semibold text-white flex items-center gap-2">
+          <svg class="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
+            </path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+            </path>
+          </svg>
+          Live Preview
+        </h2>
+
+        <div
+          class="bg-white border border-gray-200 rounded-xl p-6 shadow-xl text-slate-800 w-full max-w-sm transform transition-all hover:scale-[1.01]">
+          <div class="flex flex-col gap-4">
+
+            <div>
+              <label class="block text-sm font-semibold text-slate-700 mb-1 uppercase tracking-wide">Verification
+                Required</label>
+              <p class="text-xs text-slate-500 mb-2">Check the box below to begin verification.</p>
+            </div>
+
+            <div
+              class="bg-[#f9f9f9] border border-gray-300 rounded-[3px] p-4 flex items-center justify-between shadow-sm text-slate-800 w-full max-w-sm h-[78px]">
+              <div class="flex items-center gap-4">
+                <div class="relative flex items-center justify-center w-8 h-8">
+                  <input type="checkbox" id="checkbox" class="captcha-checkbox absolute z-10">
+                  <svg id="spinner"
+                    class="animate-spin w-8 h-8 text-blue-500 absolute opacity-0 scale-50 transition-all duration-300"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                  </svg>
+                  <svg id="error-icon"
+                    class="w-8 h-8 text-red-500 absolute opacity-0 scale-50 transition-all duration-300" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                  </svg>
+                </div>
+
+                <span id="status" class="font-medium text-sm">I am human</span>
+              </div>
+
+              <div class="flex flex-col items-center justify-center">
+                <svg class="w-8 h-8 text-blue-600 mb-1" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                </svg>
+                <div class="text-[10px] text-gray-500 flex flex-col items-center">
+                  <span>Privacy - Terms</span>
+                </div>
+              </div>
+            </div>
+
+            <div id="status-container"
+              class="hidden space-y-3 bg-slate-900 text-slate-300 p-4 rounded-lg font-mono text-xs border border-slate-700">
+              <div class="flex items-center gap-2">
+                <span id="spinner" class="animate-spin text-brand-accent">⌛</span>
+                <span id="status">Waiting to start...</span>
+              </div>
+
+              <div id="countdown-wrapper" class="hidden space-y-2 pt-2 border-t border-slate-800">
+                <div class="flex justify-between text-[10px] text-slate-400">
+                  <span>Database Query Time Remaining:</span>
+                  <span id="countdown" class="font-bold text-brand-accent">100s</span>
+                </div>
+                <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                  <div id="progress-bar" class="bg-blue-500 h-full rounded-full transition-all duration-100"
+                    style="width: 100%"></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-6">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-semibold text-white flex items-center gap-2">
+            <svg class="w-5 h-5 text-brand-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+            </svg>
+            Source Code
+          </h2>
+
+          <!-- Right Column: Source Code -->
+          <button onclick="copyCode()" id="copy-btn"
+            class="flex items-center gap-2 text-sm bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-accent/50">
+            <svg id="copy-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+              </path>
+            </svg>
+            <svg id="check-icon" class="w-4 h-4 text-green-400 hidden" fill="none" stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span id="copy-text">Copy Code</span>
+          </button>
+        </div>
+
+        <div class="rounded-xl overflow-hidden bg-[#0d1117] border border-slate-700 shadow-2xl">
+          <div class="bg-slate-800/50 px-4 py-3 flex items-center gap-2 border-b border-slate-700">
+            <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+            <span class="ml-2 text-xs text-slate-500 font-mono">existence_checker.html</span>
+          </div>
+          <div class="p-4 overflow-x-auto max-h-[500px] overflow-y-auto">
+            <pre class="font-mono text-sm leading-relaxed text-slate-300"><code id="source-code-content">&lt;h1&gt;Existence Checker&lt;/h1&gt;
+&lt;p&gt;Check the checkbox below to prove that you are not a robot&lt;/p&gt;
+
+&lt;input type="checkbox" id="checkbox"&gt;&lt;span&gt;Bot Checker&lt;/span&gt;
+
+&lt;p id="status"&gt;&lt;/p&gt;
+
+&lt;script&gt;
+  const checkbox = document.getElementById("checkbox");
+  const statusEl = document.getElementById("status");
+
+  const wait = (ms) =&gt; new Promise(resolve =&gt; setTimeout(resolve, ms));
+
+  checkbox.addEventListener("click", async (event) =&gt; {
+    checkbox.disabled = true;
+
+    statusEl.innerText = "Checking Human....";
+    await wait(5000);
+    statusEl.innerText = "Detecting Human...";
+    await wait(5000);
+    statusEl.innerText = "Searching Database...";
+    await wait(100000);
+
+    statusEl.innerText = "Human Check Passed!";
+  });
+&lt;/script&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const checkbox = document.getElementById("checkbox");
+    const statusContainer = document.getElementById("status-container");
+    const statusEl = document.getElementById("status");
+    const countdownWrapper = document.getElementById("countdown-wrapper");
+    const countdownEl = document.getElementById("countdown");
+    const progressBar = document.getElementById("progress-bar");
+    const spinner = document.getElementById("spinner");
+
+    const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+    checkbox.addEventListener("click", async (event) => {
+      checkbox.disabled = true;
+      statusContainer.classList.remove("hidden");
+      spinner.innerText = "⏳";
+      spinner.classList.add("animate-spin");
+
+      statusEl.innerText = "Checking Human....";
+      await wait(5000);
+
+      statusEl.innerText = "Detecting Human...";
+      await wait(5000);
+
+      statusEl.innerText = "Searching Database...";
+
+      countdownWrapper.classList.remove("hidden");
+      let secondsLeft = 100;
+      countdownEl.innerText = `${secondsLeft}s`;
+      progressBar.style.width = '100%';
+
+      const interval = setInterval(() => {
+        secondsLeft--;
+        if (secondsLeft >= 0) {
+          countdownEl.innerText = `${secondsLeft}s`;
+          progressBar.style.width = `${secondsLeft}%`;
+        }
+      }, 1000);
+
+      await wait(100000);
+
+      clearInterval(interval);
+      countdownWrapper.classList.add("hidden");
+      spinner.innerText = "✅";
+      spinner.classList.remove("animate-spin");
+      statusEl.innerText = "Human Check Passed! You actually exist.";
+    });
+
+    function copyCode() {
+      const codeContent = document.getElementById('source-code-content').innerText;
+      const textArea = document.createElement("textarea");
+
+      textArea.style.position = 'fixed';
+      textArea.style.top = 0;
+      textArea.style.left = 0;
+      textArea.style.width = '2em';
+      textArea.style.height = '2em';
+      textArea.style.padding = 0;
+      textArea.style.border = 'none';
+      textArea.style.outline = 'none';
+      textArea.style.boxShadow = 'none';
+      textArea.style.background = 'transparent';
+
+      textArea.value = codeContent;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          showCopySuccess();
+        }
+      } catch (err) {
+        console.error('Oops, unable to copy');
+      }
+
+      document.body.removeChild(textArea);
+    }
+
+    function showCopySuccess() {
+      const copyIcon = document.getElementById('copy-icon');
+      const checkIcon = document.getElementById('check-icon');
+      const copyText = document.getElementById('copy-text');
+      const copyBtn = document.getElementById('copy-btn');
+
+      copyIcon.classList.add('hidden');
+      checkIcon.classList.remove('hidden');
+      copyText.innerText = 'Copied!';
+      copyBtn.classList.add('border-green-500/50', 'bg-green-500/10', 'text-green-400');
+      copyBtn.classList.remove('bg-slate-800', 'text-slate-300', 'border-slate-700');
+
+      setTimeout(() => {
+        copyIcon.classList.remove('hidden');
+        checkIcon.classList.add('hidden');
+        copyText.innerText = 'Copy Code';
+        copyBtn.classList.remove('border-green-500/50', 'bg-green-500/10', 'text-green-400');
+        copyBtn.classList.add('bg-slate-800', 'text-slate-300', 'border-slate-700');
+      }, 2000);
+    }
+  </script>
+</body>
+
+</html>
